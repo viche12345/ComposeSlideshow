@@ -35,7 +35,7 @@ fun PickerScreen(
     onStartSlideshow: () -> Unit,
 ) {
     Scaffold(
-        ScaffoldDefaults.contentWindowInsets,
+        contentWindowInsets = ScaffoldDefaults.contentWindowInsets,
         topBar = {
             TopAppBar(
                 title = { Text("Audio Slideshow") },
@@ -48,18 +48,18 @@ fun PickerScreen(
             )
         }
     ) { innerPadding ->
-        BoxWithConstraints(Modifier.fillMaxSize().padding(innerPadding)) {
+        BoxWithConstraints(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
             if (maxWidth < 600.dp) {
-                Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+                Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
                     ImagePicker(selectedImages, onImagesResult)
                     AudioPicker(selectedAudio, onAudioResult)
                 }
             } else {
-                Row(Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically) {
-                    Column(Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
+                Row(modifier = Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically) {
+                    Column(modifier = Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
                         ImagePicker(selectedImages, onImagesResult)
                     }
-                    Column(Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
+                    Column(modifier = Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
                         AudioPicker(selectedAudio, onAudioResult)
                     }
                 }
