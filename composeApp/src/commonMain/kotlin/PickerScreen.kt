@@ -101,7 +101,7 @@ private fun FilePicker(
     Column(modifier.padding(32.dp), Arrangement.Center, Alignment.CenterHorizontally) {
         val launcher = rememberFilePickerLauncher(
             type = pickerType,
-            mode = PickerMode.Multiple
+            mode = PickerMode.Multiple(null)
         ) { files ->
             files?.let(onFilesResult)
         }
