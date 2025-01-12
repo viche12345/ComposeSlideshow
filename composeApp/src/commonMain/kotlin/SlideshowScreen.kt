@@ -4,6 +4,8 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,10 +28,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
 import coil3.compose.LocalPlatformContext
+import coil3.compose.rememberAsyncImagePainter
+import coil3.compose.rememberConstraintsSizeResolver
 import coil3.request.ImageRequest
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.delay
@@ -70,7 +75,8 @@ fun SlideshowScreen(
     }
 
     Scaffold(
-        contentWindowInsets = ScaffoldDefaults.contentWindowInsets
+        contentWindowInsets = ScaffoldDefaults.contentWindowInsets,
+        modifier = Modifier.background(Color.Black),
     ) { innerPadding ->
         AnimatedContent(
             targetState = currentImageIndex,
@@ -80,13 +86,9 @@ fun SlideshowScreen(
                 )
             }
         ) { targetIndex ->
-            AsyncImage(
-                model = ImageRequest.Builder(LocalPlatformContext.current)
-                    .data(images[shuffledIndices[targetIndex]])
-                    .build(),
-                contentDescription = null,
-                contentScale = ContentScale.Fit,
-                modifier = Modifier.fillMaxSize().clickable { running = !running }
+            AsyncImageWithBlurredBackground(
+                images[shuffledIndices[targetIndex]],
+                onClick = { running = !running }
             )
         }
 
@@ -112,4 +114,35 @@ fun SlideshowScreen(
         }
     }
 
+}
+
+@Composable
+private fun AsyncImageWithBlurredBackground(
+    imageUri: String,
+    onClick: () -> Unit,
+) {
+    Box(Modifier.clickable(onClick = onClick)) {
+        val sizeResolver = rememberConstraintsSizeResolver()
+        val painter = rememberAsyncImagePainter(
+            model = ImageRequest.Builder(LocalPlatformContext.current)
+                .data(imageUri)
+                .size(sizeResolver)
+                .build(),
+        )
+
+        Image(
+            painter = painter,
+            contentDescription = null,
+            modifier = Modifier
+                .fillMaxSize()
+                .blur(24.dp),
+            contentScale = ContentScale.Crop,
+            alpha = .4f,
+        )
+        Image(
+            painter = painter,
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize().then(sizeResolver),
+        )
+    }
 }
