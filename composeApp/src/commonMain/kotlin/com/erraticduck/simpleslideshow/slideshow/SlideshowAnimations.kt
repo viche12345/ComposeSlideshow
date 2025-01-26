@@ -1,3 +1,5 @@
+package com.erraticduck.simpleslideshow.slideshow
+
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
@@ -11,7 +13,6 @@ enum class SlideshowAnimations(
     SLIDE_LEFT(.015f, -.015f) {
         override suspend fun animate(block: (AnimationState) -> Unit) {
             androidx.compose.animation.core.animate(initialValue, targetValue, animationSpec = animationSpec) { value, _ ->
-                println("value: $value")
                 block(
                     AnimationState(
                         translationX = value,
@@ -25,7 +26,6 @@ enum class SlideshowAnimations(
     SLIDE_RIGHT(-.015f, .015f) {
         override suspend fun animate(block: (AnimationState) -> Unit) {
             androidx.compose.animation.core.animate(initialValue, targetValue, animationSpec = animationSpec) { value, _ ->
-                println("value: $value")
                 block(
                     AnimationState(
                         translationX = value,

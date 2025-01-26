@@ -1,3 +1,5 @@
+package com.erraticduck.simpleslideshow
+
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 

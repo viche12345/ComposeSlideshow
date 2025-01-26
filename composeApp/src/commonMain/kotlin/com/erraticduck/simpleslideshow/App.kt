@@ -1,3 +1,6 @@
+package com.erraticduck.simpleslideshow
+
+import absolutePath
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.runtime.Composable
@@ -9,6 +12,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.erraticduck.simpleslideshow.slideshow.SlideshowScreen
 
 enum class Screens {
     Home,

@@ -1,3 +1,5 @@
+package com.erraticduck.simpleslideshow
+
 import androidx.lifecycle.ViewModel
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableStateFlow

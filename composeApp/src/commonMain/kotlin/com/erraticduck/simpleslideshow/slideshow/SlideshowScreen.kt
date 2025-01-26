@@ -1,3 +1,5 @@
+package com.erraticduck.simpleslideshow.slideshow
+
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
