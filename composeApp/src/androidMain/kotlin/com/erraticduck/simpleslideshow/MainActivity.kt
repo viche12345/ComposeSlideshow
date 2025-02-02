@@ -26,7 +26,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             App(
                 viewModel,
-                onSlideshowRunning = {
+                onToggleImmersive = {
                     if (it) {
                         windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
                     } else {

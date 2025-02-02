@@ -52,6 +52,7 @@ kotlin {
             implementation(libs.androidx.navigation.compose)
 
             implementation(libs.coil)
+            implementation(libs.zoomimage)
             implementation(libs.filekit.core)
             implementation(libs.filekit.compose)
         }

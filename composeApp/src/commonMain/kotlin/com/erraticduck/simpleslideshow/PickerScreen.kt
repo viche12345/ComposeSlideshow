@@ -34,6 +34,7 @@ fun PickerScreen(
     selectedAudio: ImmutableList<String> = persistentListOf(),
     onImagesResult: (List<PlatformFile>) -> Unit,
     onAudioResult: (List<PlatformFile>) -> Unit,
+    onStartMultiView: () -> Unit,
     onStartSlideshow: () -> Unit,
 ) {
     Scaffold(
@@ -43,8 +44,11 @@ fun PickerScreen(
                 title = { Text("Audio Slideshow") },
                 windowInsets = AppBarDefaults.topAppBarWindowInsets,
                 actions = {
+                    TextButton(onStartMultiView, enabled = selectedImages.isNotEmpty()) {
+                        Text("MultiView")
+                    }
                     TextButton(onStartSlideshow, enabled = selectedImages.isNotEmpty()) {
-                        Text("START")
+                        Text("Slideshow")
                     }
                 }
             )

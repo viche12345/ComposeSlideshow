@@ -9,32 +9,36 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.erraticduck.simpleslideshow.multiview.MultiViewScreen
 import com.erraticduck.simpleslideshow.slideshow.SlideshowScreen
 
 enum class Screens {
     Home,
+    MultiView,
     Slideshow
 }
 
 @Composable
 fun App(
     viewModel: SlideShowViewModel = viewModel { SlideShowViewModel() },
-    onSlideshowRunning: (Boolean) -> Unit = {},
+    navController: NavHostController = rememberNavController(),
+    onToggleImmersive: (Boolean) -> Unit = {},
     onToggleAudio: (Boolean) -> Unit = {},
 ) {
     MaterialTheme(
         colors = darkColors()
     ) {
         val uiState by viewModel.uiState.collectAsState()
-        val navController = rememberNavController()
         DisposableEffect(navController) {
             val listener = NavController.OnDestinationChangedListener { _, destination, _ ->
                 destination.route?.let {
                     when (Screens.valueOf(it)) {
                         Screens.Home -> onToggleAudio(false)
+                        Screens.MultiView,
                         Screens.Slideshow -> onToggleAudio(true)
                     }
                 }
@@ -50,6 +54,7 @@ fun App(
             startDestination = Screens.Home.name,
         ) {
             composable(Screens.Home.name) {
+                onToggleImmersive(false)
                 PickerScreen(
                     uiState.images,
                     uiState.audio,
@@ -61,13 +66,21 @@ fun App(
                     },
                     {
                         if (uiState.images.isNotEmpty()) {
+                            navController.navigate(Screens.MultiView.name)
+                        }
+                    },
+                    {
+                        if (uiState.images.isNotEmpty()) {
                             navController.navigate(Screens.Slideshow.name)
                         }
                     }
                 )
             }
+            composable(Screens.MultiView.name) {
+                MultiViewScreen(uiState.images, onToggleImmersive)
+            }
             composable(Screens.Slideshow.name) {
-                SlideshowScreen(uiState.images, onSlideshowRunning)
+                SlideshowScreen(uiState.images, onToggleImmersive)
             }
         }
     }

@@ -36,14 +36,14 @@ import kotlinx.collections.immutable.ImmutableList
 @Composable
 fun SlideshowScreen(
     images: ImmutableList<String>,
-    onUpdateRunning: (Boolean) -> Unit,
+    onToggleImmersive: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val shuffledIndices = rememberSaveable(images) { images.indices.shuffled().toList() }
     var currentImageIndex by rememberSaveable(images) { mutableStateOf(0) }
 
     var running by rememberSaveable { mutableStateOf(true) }
-    val currentOnUpdateRunning by rememberUpdatedState(onUpdateRunning)
+    val currentOnToggleImmersive by rememberUpdatedState(onToggleImmersive)
 
     fun previousImage() {
         currentImageIndex = (currentImageIndex - 1 + images.size) % images.size
@@ -53,11 +53,12 @@ fun SlideshowScreen(
         currentImageIndex = (currentImageIndex + 1) % images.size
     }
 
-    // When this screen leaves the composition, notify slideshow stopped
+    // When slideshow is running, toggle immersive mode ON.
+    // When slideshow is paused, or when this screen leaves the composition, toggle immersive mode OFF.
     DisposableEffect(running) {
-        currentOnUpdateRunning(running)
+        currentOnToggleImmersive(running)
         onDispose {
-            currentOnUpdateRunning(false)
+            currentOnToggleImmersive(false)
         }
     }
 
