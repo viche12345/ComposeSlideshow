@@ -56,20 +56,29 @@ fun App(
             composable(Screens.Home.name) {
                 onToggleImmersive(false)
                 PickerScreen(
-                    uiState.images,
-                    uiState.audio,
-                    { imageFiles ->
-                        viewModel.updateImagesIfNotEmpty(imageFiles.mapNotNull { it.absolutePath() })
+                    images = uiState.images,
+                    selectedImageIndices = uiState.selectedImageIndices,
+                    onImageIndexSelected = { viewModel.toggleImageSelection(it) },
+                    audio = uiState.audio,
+                    selectedAudioIndices = uiState.selectedAudioIndices,
+                    onAudioIndexSelected = { viewModel.toggleAudioSelection(it) },
+                    onImagesResult = { imageFiles ->
+                        viewModel.addImages(imageFiles.mapNotNull { it.absolutePath() })
                     },
-                    { audioFiles ->
-                        viewModel.updateAudioIfNotEmpty(audioFiles.mapNotNull { it.absolutePath() })
+                    onAudioResult = { audioFiles ->
+                        viewModel.addAudio(audioFiles.mapNotNull { it.absolutePath() })
                     },
-                    {
+                    onDeleteClicked = {
+                        viewModel.removeSelectedImages()
+                        viewModel.removeSelectedAudio()
+                    },
+                    onSelectAll = { viewModel.selectAll() },
+                    onStartMultiView = {
                         if (uiState.images.isNotEmpty()) {
                             navController.navigate(Screens.MultiView.name)
                         }
                     },
-                    {
+                    onStartSlideshow = {
                         if (uiState.images.isNotEmpty()) {
                             navController.navigate(Screens.Slideshow.name)
                         }

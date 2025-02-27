@@ -68,8 +68,8 @@ class MainActivity : ComponentActivity() {
                     }
                 }
 
-                viewModel.updateImagesIfNotEmpty(images)
-                viewModel.updateAudioIfNotEmpty(audio)
+                viewModel.addImages(images)
+                viewModel.addAudio(audio)
             }
             else -> null
         }
