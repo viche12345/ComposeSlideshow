@@ -3,7 +3,7 @@ name: Build Executables
 on: workflow_dispatch
 
 jobs:
-  Build-WindowsEXE-AndroidAPK:
+  Build-AndroidAPK-WindowsJAR:
 
     runs-on: windows-latest
 
@@ -19,14 +19,14 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
-      run: ./gradlew createDistributable assembleDebug
-    - name: Upload Windows EXE
-      uses: actions/upload-artifact@v4
-      with:
-        name: windows-exe
-        path: composeApp/build/compose/binaries/**/*.exe
+      run: ./gradlew assembleDebug packageUberJarForCurrentOS
     - name: Upload Android APK
       uses: actions/upload-artifact@v4
       with:
         name: android-apk
         path: composeApp/build/outputs/apk/**/*.apk
+    - name: Upload Windows JAR
+      uses: actions/upload-artifact@v4
+      with:
+        name: windows-exe
+        path: composeApp/build/compose/jars/**/*.jar
