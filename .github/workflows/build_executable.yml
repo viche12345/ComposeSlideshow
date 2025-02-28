@@ -28,5 +28,5 @@ jobs:
     - name: Upload Windows JAR
       uses: actions/upload-artifact@v4
       with:
-        name: windows-exe
+        name: windows-jar
         path: composeApp/build/compose/jars/**/*.jar
