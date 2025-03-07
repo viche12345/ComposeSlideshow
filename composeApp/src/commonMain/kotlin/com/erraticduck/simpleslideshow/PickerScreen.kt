@@ -131,7 +131,7 @@ private fun ColumnScope.ImagePicker(
     onImagesResult: (List<PlatformFile>) -> Unit,
 ) {
     FilePicker(
-        pickerType = PickerType.Image,
+        pickerType = PickerType.File(listOf("png", "jpg", "jpeg", "gif", "bmp")),
         buttonText = "Pick Images",
         modifier = Modifier.weight(1f),
         uris = selectedImages,
