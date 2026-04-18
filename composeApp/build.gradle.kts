@@ -55,6 +55,7 @@ kotlin {
             implementation(libs.zoomimage)
             implementation(libs.filekit.core)
             implementation(libs.filekit.compose)
+            implementation(libs.fastscroller)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)

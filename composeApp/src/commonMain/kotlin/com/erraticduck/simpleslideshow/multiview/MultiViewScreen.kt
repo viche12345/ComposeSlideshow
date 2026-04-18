@@ -4,10 +4,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldDefaults
 import androidx.compose.runtime.Composable
@@ -31,6 +34,9 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImagePainter
 import com.github.panpf.zoomimage.CoilZoomAsyncImage
 import com.github.panpf.zoomimage.rememberCoilZoomState
+import io.github.oikvpqya.compose.fastscroller.HorizontalScrollbar
+import io.github.oikvpqya.compose.fastscroller.defaultScrollbarStyle
+import io.github.oikvpqya.compose.fastscroller.rememberScrollbarAdapter
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
@@ -51,8 +57,11 @@ fun MultiViewScreen(
     Scaffold(
         contentWindowInsets = ScaffoldDefaults.contentWindowInsets,
         modifier = modifier.background(Color.Black),
-    ) {
-        ImageRow(images = images) {
+    ) { paddingValues ->
+        ImageRow(
+            images = images,
+            scaffoldPaddingValues = paddingValues,
+        ) {
             isImmersive = !isImmersive
         }
     }
@@ -62,6 +71,7 @@ fun MultiViewScreen(
 fun ImageRow(
     images: ImmutableList<String>,
     modifier: Modifier = Modifier,
+    scaffoldPaddingValues: PaddingValues,
     onImageTap: (Int) -> Unit = {},
 ) {
     BoxWithConstraints(modifier) {
@@ -81,7 +91,11 @@ fun ImageRow(
         // its zoom state (which it does whenever its container size changes).
         val zoomContainerWidths = remember { List(images.size) { minWidthDp }.toMutableStateList() }
 
-        LazyRow(Modifier.align(Alignment.Center)) {
+        val lazyRowState = rememberLazyListState()
+        LazyRow(
+            modifier = Modifier.align(Alignment.Center),
+            state = lazyRowState,
+        ) {
             itemsIndexed(images) { index, uri ->
                 val zoomState = rememberCoilZoomState()
                 var sizeResolved by remember { mutableStateOf(false) }
@@ -195,5 +209,11 @@ fun ImageRow(
                 }
             }
         }
+
+        HorizontalScrollbar(
+            modifier = Modifier.align(Alignment.BottomCenter).padding(scaffoldPaddingValues).padding(horizontal = 16.dp),
+            adapter = rememberScrollbarAdapter(lazyRowState),
+            style = defaultScrollbarStyle().copy(thickness = 16.dp),
+        )
     }
 }

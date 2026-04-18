@@ -14,6 +14,7 @@ kotlinImmutable = "0.3.8"
 coil-version = "3.0.4"
 zoomimage = "1.1.1"
 filekit = "0.8.8"
+fastscroller = "0.3.2"
 
 [libraries]
 kotlin-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinImmutable" }
@@ -29,6 +30,7 @@ coil = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil-version" 
 zoomimage = { module = "io.github.panpf.zoomimage:zoomimage-compose-coil3", version.ref = "zoomimage" }
 filekit-core = { module = "io.github.vinceglb:filekit-core", version.ref = "filekit" }
 filekit-compose = { module = "io.github.vinceglb:filekit-compose", version.ref = "filekit" }
+fastscroller = { module = "io.github.oikvpqya.compose.fastscroller:fastscroller-core", version.ref = "fastscroller" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
